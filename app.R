@@ -9,7 +9,7 @@ source(here::here("R/generate_modal.R"))
 
 # Configure MongoDB
 Sys.setenv(R_CONFIG_ACTIVE =  "default")
-config <- config::get(file = "config.yml")
+config <- config::get(file = here::here("config.yml"))
 
 ui <- shiny::fluidPage(
   
@@ -97,7 +97,8 @@ server <- function(input, output, session) {
       first_name_txt = input$first_name, 
       last_name_txt = input$last_name, 
       email_txt = input$email, 
-      org_txt = input$org
+      org_txt = input$org, 
+      creds = config
     )
     
   })

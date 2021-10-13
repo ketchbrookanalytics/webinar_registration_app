@@ -1,24 +1,22 @@
 
 
 
-mongo_connect <- function(collection, database, 
-                          host = config$host, 
-                          username = config$username, 
-                          password = config$password) {
+mongo_connect <- function(collection, database, creds) {
   
   mongolite::mongo(
     collection = collection, 
-    url = stringr::str_glue("mongodb+srv://{username}:{password}@{host}/{database}")
+    url = stringr::str_glue("mongodb+srv://{creds$username}:{creds$password}@{creds$host}/{database}")
   )
   
 }
 
 
-send_data <- function(data) {
+send_data <- function(data, creds) {
   
   mongo_connection <- mongo_connect(
     collection = "mrm_webinar_registration", 
-    database = "marketing"
+    database = "marketing", 
+    creds = creds
   )
   
   mongo_connection$insert(data)
@@ -26,7 +24,7 @@ send_data <- function(data) {
 }
 
 
-process_registration <- function(first_name_txt, last_name_txt, email_txt, org_txt) {
+process_registration <- function(first_name_txt, last_name_txt, email_txt, org_txt, creds) {
   
   title <- "Thank You!"
   text <- paste(
@@ -76,7 +74,7 @@ process_registration <- function(first_name_txt, last_name_txt, email_txt, org_t
       event_name = "Model Risk Management Webinar"
     )
     
-    send_data(data = user_data)
+    send_data(data = user_data, creds = creds)
     
   }
   
