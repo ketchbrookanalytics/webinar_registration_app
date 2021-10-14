@@ -1,3 +1,8 @@
+
+
+
+# Argument-less function to return HTML components that build out the left-hand
+# side of the page containing webinar information
 registration_txt <- function() {
   
   font_size_html <- "font-size:21px"

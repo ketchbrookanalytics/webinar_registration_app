@@ -4,6 +4,7 @@ library(config)
 library(mongolite)
 library(here)
 
+# Import custom functions
 source(here::here("R/app_text.R"))
 source(here::here("R/generate_modal.R"))
 
@@ -11,6 +12,7 @@ source(here::here("R/generate_modal.R"))
 Sys.setenv(R_CONFIG_ACTIVE =  "default")
 config <- config::get(file = here::here("config.yml"))
 
+# UI ----
 ui <- shiny::fluidPage(
   
   title = "Webinar: Model Risk Management", 
@@ -19,6 +21,7 @@ ui <- shiny::fluidPage(
     
     shiny::br(), 
     
+    # Build informational panel on left side of the page
     shiny::column(
       width = 6, 
       
@@ -33,15 +36,16 @@ ui <- shiny::fluidPage(
       
     ), 
     
+    # Build out the right side of the page...
     shiny::column(
       width = 6, 
       
       shiny::br(), 
       
+      # Add KA logo with hyperlink to website 
       shiny::tags$img(
         class = "thumbnail img-responsive", 
         src = "ka_logo.jpg", 
-        # style = "width:200px;"   # image size is responsive up to 200px
       ) %>% 
         shiny::a(
           href = "https://www.ketchbrookanalytics.com/", 
@@ -52,6 +56,7 @@ ui <- shiny::fluidPage(
       
       shiny::h3("Please Register Using the Fields Below:"), 
       
+      # Build text input boxes for entering name, email, and organization
       shiny::textInput(
         inputId = "first_name", 
         label = "First Name *", 
@@ -76,6 +81,7 @@ ui <- shiny::fluidPage(
         width = '100%'
       ),
       
+      # Build "Register" button to take server action on click
       shiny::actionButton(
         class = "btn btn-primary btn-lg", 
         inputId = "register_btn", 
@@ -89,8 +95,10 @@ ui <- shiny::fluidPage(
   
 )
 
+# SERVER ----
 server <- function(input, output, session) {
   
+  # On "Register" button-click, process registration using custom function
   shiny::observeEvent(input$register_btn, {
     
     process_registration(
